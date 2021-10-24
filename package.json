@@ -1,0 +1,26 @@
+{
+  "name": "HOMEWORK12_EMPLOYEE_TRACKER",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christa-baccas/HOMEWORK12_EMPLOYEE_TRACKER.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christa-baccas/HOMEWORK12_EMPLOYEE_TRACKER/issues"
+  },
+  "homepage": "https://github.com/christa-baccas/HOMEWORK12_EMPLOYEE_TRACKER#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.2"
+  }
+}
