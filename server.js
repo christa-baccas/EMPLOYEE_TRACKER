@@ -30,9 +30,43 @@ const startupQuestions = () => {
         name: "options",
         choices: ["View All Employees", "Add an Employee", "Update Employee Role", "View All Roles", "Add a Role", "View All Departments", "Add Department"]
      },
-    ])
+    ]).then((select) => {
+      switch (select.options) {
+        case "View All Employees":
+          console.log("View Employees");
+          break;
+        case "Add an Employee":
+          console.log("Add an Employee");
+          break;
+        case "Update Employee Role":
+          console.log("Update Employee Role");
+          break;
+        case "View All Roles":
+          console.log("View All Roles");
+          break;
+        case "Add a Role":
+          console.log("Add a Role");
+          break;
+        case "View All Departments":
+          console.log("View all departments");
+          break;
+        case "Add Department":
+          console.log("Add Department");
+          break;
+        default:
+          break;
+      }
+    });
 };
 startupQuestions();
+
+app.use((req, res) => {
+  res.status(404).end();
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // WHEN I choose to view all departments I'm presented with a formatted table showing department names and department ids
 
