@@ -107,14 +107,14 @@ const addNewDepartment = () => {
         name: "newDepartment",
       },
     ]).then(data => {
-      let addDept = data.newDepartment;
+      let addDept = [data.newDepartment];
       console.log(addDept);
-      db.query("INSERT INTO department (name) VALUES (?)"), addDept, (err, result) => {
+      db.query("INSERT INTO department (name) VALUES (?)", addDept, (err, result) => {        
         if (err) {
           console.log(err);
-        }g
+        }
         console.log(result);
-      };
+      });
     });
   };
 
@@ -156,9 +156,6 @@ const addNewDepartment = () => {
       
 
 
-
-
-
 app.use((req, res) => {
   res.status(404).end();
 });
@@ -168,15 +165,8 @@ app.listen(PORT, () => {
 });
 
 
+// I choose to add a role enter the name, salary, and department for the role and that role is added to the database
 
-// WHEN I choose to add a department
-// THEN I am prompted to enter the name of the department and that department is added to the database
+// WHEN I choose to add an employee enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
-// WHEN I choose to add a role
-// THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-
-// WHEN I choose to add an employee
-// THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-
-// WHEN I choose to update an employee role
-// THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+// WHEN I choose to update an employee role prompted to select an employee to update and their new role and this information is updated in the database
