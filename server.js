@@ -15,7 +15,7 @@ const db = mysql.createConnection(
     host: 'localhost',
     user: 'root',
     password: 'password',
-    database: 'courses_db'
+    database: 'employees_db'
   },
   console.log(`Connected to the database.`)
 );
@@ -33,7 +33,11 @@ const startupQuestions = () => {
     ]).then((select) => {
       switch (select.options) {
         case "View All Employees":
-          console.log("View Employees");
+          db.query('SELECT * FROM employee', function (err, results) {
+            // console.log(results);
+            console.table(results);
+          });
+          // console.log("View Employees");
           break;
         case "Add an Employee":
           console.log("Add an Employee");
