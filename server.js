@@ -43,36 +43,29 @@ const startupQuestions = () => {
       switch (select.options) {
         case "View All Employees":
           db.query("SELECT * FROM employee", function (err, results) {
-            // console.log(results);
             console.table(results);
           });
-          // console.log("View Employees");
           break;
         case "Add an Employee":
-          console.log("Add an Employee");
           break;
         case "Update Employee Role":
-          console.log("Update Employee Role");
           break;
+        // view all roles view job title, role id, the department, and the salary
         case "View All Roles":
-          db.query("SELECT * FROM role", function (err, results) {
-            // console.log(results);
+            db.query("SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id", function (err, results) {
             console.table(results);
           });
-          // console.log("View All Roles");
           break;
         case "Add a Role":
-          console.log("Add a Role");
           break;
+        // view all departments id and names
         case "View All Departments":
-          db.query("SELECT * FROM department", function (err, results) {
-            // console.log(results);
+            db.query("SELECT department.id AS ID, department.name AS Department FROM department", function (err, results) {
             console.table(results);
           });
-          // console.log("View all departments");
           break;
         case "Add Department":
-          console.log("Add Department");
+            addNewDepartment();
           break;
         default:
           break;
@@ -80,6 +73,61 @@ const startupQuestions = () => {
     });
 };
 startupQuestions();
+
+
+
+// add department prompt
+const addNewDepartment = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "type",
+        message: "Enter the name of the department",
+        name: "newDepartment",
+      },
+    ])
+};
+
+// add role prompt
+const addNewRole = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "type",
+        message: "Enter the name of the department",
+        name: "newDepartment",
+      },
+      {
+        type: "type",
+        message: "Enter the name of the department",
+        name: "newDepartment",
+      },
+      {
+        type: "type",
+        message: "Enter the name of the department",
+        name: "newDepartment",
+      },
+    ])
+};
+
+// add employee prompt
+const addNewEmployee = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "type",
+        message: "Enter the name of the department",
+        name: "newDepartment",
+      },
+    ])
+};
+// INSERT INTO department (name)
+// VALUES (Finance) 
+      
+
+
+
+
 
 app.use((req, res) => {
   res.status(404).end();
@@ -89,10 +137,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-// WHEN I choose to view all departments I'm presented with a formatted table showing department names and department ids
-
-// WHEN I choose to view all roles
-// THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
