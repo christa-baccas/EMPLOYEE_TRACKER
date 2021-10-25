@@ -70,8 +70,8 @@ const startupQuestions = () => {
 
 
         case "Add a Role":
+          addNewRole();
           break;
-
 
 
         // view all departments id and names
@@ -120,27 +120,42 @@ const addNewDepartment = () => {
 
 
 
-// // add role prompt
-// const addNewRole = () => {
-//   return inquirer
-//     .prompt([
-//       {
-//         type: "type",
-//         message: "Enter the name of the department",
-//         name: "newDepartment",
-//       },
-//       {
-//         type: "type",
-//         message: "Enter the name of the department",
-//         name: "newDepartment",
-//       },
-//       {
-//         type: "type",
-//         message: "Enter the name of the department",
-//         name: "newDepartment",
-//       },
-//     ])
-// };
+// add role prompt
+const addNewRole = () => {
+   inquirer.prompt([
+      {
+        type: "type",
+        message: "Enter the title of the role",
+        name: "newRoleTitle",
+      },
+      {
+        type: "type",
+        message: "Enter the salary of the role",
+        name: "newRoleSalary",
+      },
+    ]).then((data) => {
+        let addRole = [data.newRoleTitle, data.newRoleSalary]
+        console.log(addRole);
+        //show department table from db
+        db.query("SELECT name, id FROM department", function (err, results) {
+        console.table(results);
+
+        inquirer.prompt([
+          {
+            type: "type",
+            message: "Enter the deparment id for the role being created",
+            name: "newRoleDepartment",
+          }
+        ]).then((data) =>{
+          addRole.push(data.newRoleDepartment)
+          console.log(addRole);
+        })
+    });
+  })
+}
+
+
+
 
 // // add employee prompt
 // const addNewEmployee = () => {
