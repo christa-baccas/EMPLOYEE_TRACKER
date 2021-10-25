@@ -46,6 +46,10 @@ const startupQuestions = () => {
           console.log("Update Employee Role");
           break;
         case "View All Roles":
+          db.query('SELECT * FROM role', function (err, results) {
+            // console.log(results);
+            console.table(results);
+          });
           console.log("View All Roles");
           break;
         case "Add a Role":
