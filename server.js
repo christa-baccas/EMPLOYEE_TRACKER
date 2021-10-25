@@ -149,6 +149,13 @@ const addNewRole = () => {
         ]).then((data) =>{
           addRole.push(data.newRoleDepartment)
           console.log(addRole);
+          
+          db.query("INSERT INTO role (title, salary, department_id) VALUES (?,?,?)", addRole, (err, result) => {        
+            if (err) {
+              console.log(err);
+            }
+            console.log(result);
+          });    
         })
     });
   })
