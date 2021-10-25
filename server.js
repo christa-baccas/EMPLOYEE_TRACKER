@@ -41,32 +41,54 @@ const startupQuestions = () => {
     ])
     .then((select) => {
       switch (select.options) {
+        // view all employees showing employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
         case "View All Employees":
-          db.query("SELECT * FROM employee", function (err, results) {
+          db.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department,role.salary, CONCAT (manager.first_name, " ", manager.last_name) AS manager FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee manager ON employee.manager_id = manager.id`, function (err, results) {
             console.table(results);
           });
           break;
+
+
+
         case "Add an Employee":
           break;
+
+
+
         case "Update Employee Role":
           break;
+
+
+
         // view all roles view job title, role id, the department, and the salary
         case "View All Roles":
             db.query("SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id", function (err, results) {
             console.table(results);
           });
           break;
+
+
+
         case "Add a Role":
           break;
+
+
+
         // view all departments id and names
         case "View All Departments":
             db.query("SELECT department.id AS ID, department.name AS Department FROM department", function (err, results) {
             console.table(results);
           });
           break;
+
+
+
         case "Add Department":
             addNewDepartment();
           break;
+
+
+
         default:
           break;
       }
@@ -78,51 +100,59 @@ startupQuestions();
 
 // add department prompt
 const addNewDepartment = () => {
-  return inquirer
-    .prompt([
+   inquirer.prompt([
       {
         type: "type",
         message: "Enter the name of the department",
         name: "newDepartment",
       },
-    ])
-};
+    ]).then(data => {
+      let addDept = data.newDepartment;
+      console.log(addDept);
+      db.query("INSERT INTO department (name) VALUES (?)"), addDept, (err, result) => {
+        if (err) {
+          console.log(err);
+        }g
+        console.log(result);
+      };
+    });
+  };
 
-// add role prompt
-const addNewRole = () => {
-  return inquirer
-    .prompt([
-      {
-        type: "type",
-        message: "Enter the name of the department",
-        name: "newDepartment",
-      },
-      {
-        type: "type",
-        message: "Enter the name of the department",
-        name: "newDepartment",
-      },
-      {
-        type: "type",
-        message: "Enter the name of the department",
-        name: "newDepartment",
-      },
-    ])
-};
 
-// add employee prompt
-const addNewEmployee = () => {
-  return inquirer
-    .prompt([
-      {
-        type: "type",
-        message: "Enter the name of the department",
-        name: "newDepartment",
-      },
-    ])
-};
-// INSERT INTO department (name)
-// VALUES (Finance) 
+
+// // add role prompt
+// const addNewRole = () => {
+//   return inquirer
+//     .prompt([
+//       {
+//         type: "type",
+//         message: "Enter the name of the department",
+//         name: "newDepartment",
+//       },
+//       {
+//         type: "type",
+//         message: "Enter the name of the department",
+//         name: "newDepartment",
+//       },
+//       {
+//         type: "type",
+//         message: "Enter the name of the department",
+//         name: "newDepartment",
+//       },
+//     ])
+// };
+
+// // add employee prompt
+// const addNewEmployee = () => {
+//   return inquirer
+//     .prompt([
+//       {
+//         type: "type",
+//         message: "Enter the name of the department",
+//         name: "newDepartment",
+//       },
+//     ])
+// };
       
 
 
@@ -138,8 +168,6 @@ app.listen(PORT, () => {
 });
 
 
-// WHEN I choose to view all employees
-// THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 
 // WHEN I choose to add a department
 // THEN I am prompted to enter the name of the department and that department is added to the database
