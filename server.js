@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const express = require('express');
-const mysql = require('mysql2');
+const express = require("express");
+const mysql = require("mysql2");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -12,10 +12,10 @@ app.use(express.json());
 // Connect to database
 const db = mysql.createConnection(
   {
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'employees_db'
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "employees_db",
   },
   console.log(`Connected to the database.`)
 );
@@ -28,12 +28,21 @@ const startupQuestions = () => {
         type: "list",
         message: "Please select the following",
         name: "options",
-        choices: ["View All Employees", "Add an Employee", "Update Employee Role", "View All Roles", "Add a Role", "View All Departments", "Add Department"]
-     },
-    ]).then((select) => {
+        choices: [
+          "View All Employees",
+          "Add an Employee",
+          "Update Employee Role",
+          "View All Roles",
+          "Add a Role",
+          "View All Departments",
+          "Add Department",
+        ],
+      },
+    ])
+    .then((select) => {
       switch (select.options) {
         case "View All Employees":
-          db.query('SELECT * FROM employee', function (err, results) {
+          db.query("SELECT * FROM employee", function (err, results) {
             // console.log(results);
             console.table(results);
           });
@@ -46,17 +55,21 @@ const startupQuestions = () => {
           console.log("Update Employee Role");
           break;
         case "View All Roles":
-          db.query('SELECT * FROM role', function (err, results) {
+          db.query("SELECT * FROM role", function (err, results) {
             // console.log(results);
             console.table(results);
           });
-          console.log("View All Roles");
+          // console.log("View All Roles");
           break;
         case "Add a Role":
           console.log("Add a Role");
           break;
         case "View All Departments":
-          console.log("View all departments");
+          db.query("SELECT * FROM department", function (err, results) {
+            // console.log(results);
+            console.table(results);
+          });
+          // console.log("View all departments");
           break;
         case "Add Department":
           console.log("Add Department");
@@ -94,4 +107,4 @@ app.listen(PORT, () => {
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 
 // WHEN I choose to update an employee role
-// THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
+// THEN I am prompted to select an employee to update and their new role and this information is updated in the database
