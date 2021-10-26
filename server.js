@@ -49,6 +49,7 @@ const startupQuestions = () => {
           break;
 
         case "Update Employee Role":
+          updateEmployee();
           break;
 
         case "View All Roles":
@@ -148,6 +149,7 @@ const addNewRole = () => {
       }
     ]).then((data) => {
       const addRole = [data.title, data.salary];
+      // searches the db for a list of deparments the role can be assigned too
       db.query(`SELECT name, id FROM department`, (err, result) => {      
         const departmentTable = result.map(({ id, name }) => ({ name: name, value: id }));
     
@@ -192,8 +194,8 @@ const addNewEmployee = () => {
     ]).then((data) => {
       const addEmployee = [data.first, data.last];
       db.query(`SELECT title, id FROM role`, (err, result) => {      
-        const roleTable = result.map(({ id, title }) => ({ name: title, value: id }));
-    
+        const roleTable = result.map(({ id, title }) => ({ name:title, value:id }));
+        console.log(roleTable);
         inquirer.prompt([
               {
                 type: 'list',
@@ -204,8 +206,8 @@ const addNewEmployee = () => {
             ]).then(data => {
               addEmployee.push(data.role);
               db.query('SELECT * FROM employee', (err, result) => {
-                const managers = result.map(({ id, first_name, last_name }) => ({ name: first_name, last_name, value: id }));
-
+                const managers = result.map(({ id, first_name, last_name }) => ({name:first_name, last_name, value:id }));
+                console.log(managers)
                 inquirer.prompt([
                   {
                     type: 'list',
@@ -216,25 +218,58 @@ const addNewEmployee = () => {
                 ]).then((data) =>{
                   addEmployee.push(data.manager);
                   console.log(addEmployee);
-                })
-      
-             })
+                    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, addEmployee, (err, result) => { 
+                      if (err) {
+                        console.log(err);
+                      }
+                      console.log('Employee Added!');
+                      startupQuestions()
+                });
+              })
+            })
         });
       })
     });
   }
-                      
-//   db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, addRole, (err, result) => { 
-//     if (err) {
-//       console.log(err);
-//     }
-//     console.log('Employee Added!');
-//     startupQuestions()
-// });
 
+  
+// update an employee role prompted to select an employee to update and their new role and this information is updated in the database
+// update employee info
+const updateEmployee = () => {
+  db.query('SELECT * FROM employee', (err, result) => {
+    const employee = result.map(({ id, first_name, last_name }) => ({name:first_name + " " + last_name, value:id }));
+    inquirer.prompt([
+      {
+        type: 'list',
+        name: 'employee',
+        message: "Select the employee you'd like to update.",
+        choices: employee
+      }
+    ]).then((data) => {
+      const updateRole = data.employee;
+      db.query(`SELECT title, id FROM role`, (err, result) => {      
+        const roleTable = result.map(({ id, title }) => ({ name:title, value:id }));
+        console.log(roleTable);
+        inquirer.prompt([
+              {
+                type: 'list',
+                name: 'role',
+                message: "Select the new employee's role.",
+                choices: roleTable
+              }
+            ]).then((data) =>{
+              updateRole.push(data.role);
+              console.log(updateRole);
+                db.query(`UPDATE employee SET role_id = ? WHERE id = ? `, updateRole, (err, result) => { 
+                  if (err) {
+                    console.log(err);
+                  }
+                  console.log('Employee Updated!');
+                  startupQuestions()
+            });
+          })
+      });
+    }); 
+  });
+};
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
-// });
-
-//WHEN I choose to update an employee role prompted to select an employee to update and their new role and this information is updated in the database
