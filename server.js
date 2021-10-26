@@ -246,7 +246,7 @@ const updateEmployee = () => {
         choices: employee
       }
     ]).then((data) => {
-      const updateRole = data.employee;
+      const updateRole = [data.employee];
       db.query(`SELECT title, id FROM role`, (err, result) => {      
         const roleTable = result.map(({ id, title }) => ({ name:title, value:id }));
         console.log(roleTable);
