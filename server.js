@@ -1,13 +1,5 @@
 const inquirer = require("inquirer");
-// const express = require("express");
 const mysql = require("mysql2");
-
-// const PORT = process.env.PORT || 3001;
-// const app = express();
-
-// Express middleware
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
 
 // Connect to database
 const db = mysql.createConnection(
@@ -68,15 +60,18 @@ const startupQuestions = () => {
           addNewDepartment();
           break;
 
-        default:
-          return;
+        case "Exit":
+          return process.exit()
+          break;
+
+        default :
           break;
     };
   });
 };
 startupQuestions();
 
-// //view all departments
+//view all departments
 const viewDepartments = () => {
   db.query(
     "SELECT department.id AS ID, department.name AS Department FROM department",
@@ -87,7 +82,7 @@ const viewDepartments = () => {
   );
 };
 
-// //view all roles
+//view all roles
 const viewRoles = () => {
   db.query("SELECT role.id, role.title, role.salary, department.name AS department FROM role INNER JOIN department ON role.department_id = department.id",
     function (err, results) {
@@ -195,7 +190,7 @@ const addNewEmployee = () => {
       const addEmployee = [data.first, data.last];
       db.query(`SELECT title, id FROM role`, (err, result) => {      
         const roleTable = result.map(({ id, title }) => ({ name:title, value:id }));
-        console.log(roleTable);
+        // console.log(roleTable);
         inquirer.prompt([
               {
                 type: 'list',
@@ -206,8 +201,8 @@ const addNewEmployee = () => {
             ]).then(data => {
               addEmployee.push(data.role);
               db.query('SELECT * FROM employee', (err, result) => {
-                const managers = result.map(({ id, first_name, last_name }) => ({name:first_name, last_name, value:id }));
-                console.log(managers)
+                const managers = result.map(({ id, first_name, last_name }) => ({name:first_name + " " + last_name, value:id }));
+                // console.log(managers)
                 inquirer.prompt([
                   {
                     type: 'list',
@@ -217,7 +212,7 @@ const addNewEmployee = () => {
                   }
                 ]).then((data) =>{
                   addEmployee.push(data.manager);
-                  console.log(addEmployee);
+                  // console.log(addEmployee);
                     db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, addEmployee, (err, result) => { 
                       if (err) {
                         console.log(err);
@@ -249,7 +244,7 @@ const updateEmployee = () => {
       const updateRole = [data.employee];
       db.query(`SELECT title, id FROM role`, (err, result) => {      
         const roleTable = result.map(({ id, title }) => ({ name:title, value:id }));
-        console.log(roleTable);
+        // console.log(roleTable);
         inquirer.prompt([
               {
                 type: 'list',
@@ -258,8 +253,9 @@ const updateEmployee = () => {
                 choices: roleTable
               }
             ]).then((data) =>{
-              updateRole.push(data.role);
-              console.log(updateRole);
+              updateRole.unshift(data.role);
+              // console.log(updateRole);
+
                 db.query(`UPDATE employee SET role_id = ? WHERE id = ? `, updateRole, (err, result) => { 
                   if (err) {
                     console.log(err);

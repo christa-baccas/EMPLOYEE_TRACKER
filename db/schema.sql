@@ -6,7 +6,7 @@ USE employees_db;
 -- Creates the department table --
 CREATE TABLE department (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30) NOT NULL,
+  name VARCHAR(30) NOT NULL
 );
 
 -- Creates the role table --
@@ -29,7 +29,7 @@ CREATE TABLE employee (
   FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
 
-DESCRIBE department;
-DESCRIBE role;
-DESCRIBE employee;
+-- DESCRIBE department;
+-- DESCRIBE role;
+-- DESCRIBE employee;
 

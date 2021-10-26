@@ -12,17 +12,17 @@ SELECT * FROM employees_db.department;
 
 -- roles --
 INSERT INTO role(title,salary,department_id)
-VALUES  ("Marketing Manager", 100.00, 4), 
-        ("Marketing Assistant", 80.00, 4), 
-		("Senior Software Developer", 100.000, 6), 
-		("QA Engineer", 100.000, 6), 
-		("Sales Representative", 70.000, 3),
-		("Sales Manager", 95.000, 3),
-		("IT Manager", 80.000, 2),
-		("IT Representative", 65.000, 2), 
-		("Director of Operations", 190.000, 5),
-		("HR Manager", 95.000, 1),
-		("Payroll Clerk", 95.000, 1);
+VALUES  ("Marketing Manager", 100000, 4), 
+        ("Marketing Assistant", 80000, 4), 
+		("Senior Software Developer", 100000, 6), 
+		("QA Engineer", 100000, 6), 
+		("Sales Representative", 70000, 3),
+		("Sales Manager", 95000, 3),
+		("IT Manager", 80000, 2),
+		("IT Representative", 65000, 2), 
+		("Director of Operations", 150000, 5),
+		("HR Manager", 95000, 1),
+		("Payroll Clerk", 85000, 1);
 SELECT * FROM employees_db.role;
 
 -- employees --
