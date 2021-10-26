@@ -148,24 +148,33 @@ const addNewRole = () => {
         name: "salary",
       }
     ]).then((data) => {
-      let addRole = [data.title, data.salary];
-      db.query(`SELECT role.id, role.title FROM role`, (err, result) => {
-      
-        const roles = result.map(({ id, title }) => ({ name: title, value: id }));
+      const addRole = [data.title, data.salary];
+      db.query(`SELECT name, id FROM department`, (err, result) => {      
+        const departmentTable = result.map(({ id, name }) => ({ name: name, value: id }));
+    
         inquirer.prompt([
               {
                 type: 'list',
                 name: 'role',
-                message: "What is the employee's role?",
-                choices: roles
+                message: "Select the new role's department",
+                choices: departmentTable
               }
-            ])
+            ]).then(data => {
+              const dept = data.departmentTable;
+              addRole.push(dept);
+              console.log(addRole);
+          //   db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, addRole, (err, result) => { 
+          //     if (err) {
+          //       console.log(err);
+          //     }
+          //     console.log('Role Added!');
+          //     startupQuestions()
+          // });
       });
+    })
   });
-};
-
-
-
+}
+                      
 app.use((req, res) => {
   res.status(404).end();
 });
