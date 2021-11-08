@@ -1,5 +1,5 @@
 ![License Badge](https://img.shields.io/badge/license-MIT-blue)
-# HOMEWORK12_EMPLOYEE_TRACKER
+# EMPLOYEE_TRACKER
 
 # MySQL - Employee Tracker
 
